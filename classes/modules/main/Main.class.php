@@ -51,4 +51,22 @@ class PluginPage_ModuleMain extends ModuleORM {
 			$this->RebuildPageUrlFull($oPage,false);
 		}
 	}
+
+	public function GetNextPageBySort($iSort,$sPid,$sWay) {
+		$aFilter=array();
+		if (is_null($sPid)) {
+			$aFilter['#where']=array('pid is null'=>array());
+		} else {
+			$aFilter['pid']=$sPid;
+		}
+
+		if ($sWay=='up') {
+			$aFilter['sort >']=$iSort;
+			$aFilter['#order']=array('sort'=>'asc');
+		} else {
+			$aFilter['sort <']=$iSort;
+			$aFilter['#order']=array('sort'=>'desc');
+		}
+		return $this->GetPageByFilter($aFilter);
+	}
 }

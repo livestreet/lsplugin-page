@@ -117,7 +117,11 @@ class PluginPage_ModuleMain_EntityPage extends EntityORM {
 	 */
 	public function ValidateSortCheck($sValue,$aParams) {
 		if (!is_numeric($this->getSort())) {
-			$this->setSort(100);
+			if (null!==($iMin=$this->PluginPage_Main_GetMinSortFromPageByFilter())) {
+				$this->setSort($iMin-5);
+			} else {
+				$this->setSort(1000);
+			}
 		}
 		return true;
 	}

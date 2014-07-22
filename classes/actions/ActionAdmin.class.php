@@ -46,12 +46,12 @@ class PluginPage_ActionAdmin extends PluginAdmin_ActionPlugin {
 		 */
 		$this->RegisterEventExternal('Ajax','PluginPage_ActionAdmin_EventAjax');
 		/**
-		 * Список статей, создание и обновление
+		 * Список страниц, создание и обновление
 		 */
 		$this->AddEvent('index','EventIndex');
-		//$this->AddEventPreg('/^(page(\d{1,5}))?$/i','/^$/i','EventIndex');
 		$this->AddEvent('create','EventCreate');
 		$this->AddEventPreg('/^update$/i','/^\d{1,6}$/i','/^$/i','EventUpdate');
+		$this->AddEventPreg('/^sort$/i','/^up|down$/i','/^\d{1,6}$/i','/^$/i','EventSort');
 		/**
 		 * Ajax обработка
 		 */
@@ -61,7 +61,7 @@ class PluginPage_ActionAdmin extends PluginAdmin_ActionPlugin {
 	}
 
 	/**
-	 *	Вывод списка статей
+	 *	Вывод списка страниц
 	 */
 	protected function EventIndex() {
 		/**
@@ -80,11 +80,11 @@ class PluginPage_ActionAdmin extends PluginAdmin_ActionPlugin {
 	}
 
 	/**
-	 * Создание статьи. По факту только отображение шаблона, т.к. обработка идет на ajax
+	 * Создание страницы. По факту только отображение шаблона, т.к. обработка идет на ajax
 	 */
 	protected function EventCreate() {
 		/**
-		 * Получаем список категорий для данного типа
+		 * Получаем список страниц
 		 */
 		$aPages=$this->PluginPage_Main_LoadTreeOfPage(array('#order' => array('sort' => 'desc')));
 		$aPages=ModuleORM::buildTree($aPages);
@@ -94,18 +94,57 @@ class PluginPage_ActionAdmin extends PluginAdmin_ActionPlugin {
 	}
 
 	/**
-	 * Редактирование статьи
+	 * Редактирование страницы
 	 */
 	protected function EventUpdate() {
 		/**
-		 * Проверяем статью на существование
+		 * Проверяем страницу на существование
 		 */
 		if (!($oPage=$this->PluginPage_Main_GetPageById($this->GetParam(0)))) {
 			$this->Message_AddErrorSingle('Не удалось найти страницу',$this->Lang_Get('error'));
 			return $this->EventError();
 		}
 
+		/**
+		 * Получаем список страниц
+		 */
+		$aPages=$this->PluginPage_Main_LoadTreeOfPage(array('#order' => array('sort' => 'desc')));
+		$aPages=ModuleORM::buildTree($aPages);
+
+		$this->Viewer_Assign('aPageItems', $aPages);
 		$this->Viewer_Assign("oPage",$oPage);
 		$this->SetTemplateAction('create');
+	}
+
+	protected function EventSort() {
+		$this->Security_ValidateSendForm();
+		/**
+		 * Проверяем страницу на существование
+		 */
+		if (!($oPage=$this->PluginPage_Main_GetPageById($this->GetParam(1)))) {
+			$this->Message_AddErrorSingle('Не удалось найти страницу',$this->Lang_Get('error'));
+			return $this->EventError();
+		}
+
+		$sWay=$this->GetParam(0);
+		$iSortOld=$oPage->getSort();
+		if ($oPagePrev=$this->PluginPage_Main_GetNextPageBySort($iSortOld,$oPage->getPid(),$sWay)) {
+			$iSortNew=$oPagePrev->getSort();
+			$oPagePrev->setSort($iSortOld);
+			$oPagePrev->Update();
+		} else {
+			if ($sWay=='down') {
+				$iSortNew=$iSortOld-1;
+			} else {
+				$iSortNew=$iSortOld+1;
+			}
+		}
+		/**
+		 * Меняем значения сортировки местами
+		 */
+		$oPage->setSort($iSortNew);
+		$oPage->Update();
+
+		Router::Location($this->oAdminUrl->get());
 	}
 }

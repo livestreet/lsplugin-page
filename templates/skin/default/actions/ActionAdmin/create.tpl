@@ -32,7 +32,7 @@
 			sFieldLabel         = 'Вложить в'
 			sFieldClasses       = 'width-200'
 			aFieldItems         = $aCategoriesList
-			sFieldSelectedValue = $_aRequest.page.pid}
+			sFieldSelectedValue = ($oPage) ? $oPage->getPid() : '' }
 
 
 	{include file="{$aTemplatePathPlugin.admin}forms/fields/form.field.text.tpl"
@@ -67,7 +67,7 @@
 
 	{include file="{$aTemplatePathPlugin.admin}forms/fields/form.field.text.tpl"
 			sFieldName  = 'page[sort]'
-			sFieldValue = (($oPage) ? $oPage->getSort() : '')|escape
+			sFieldValue = ($oPage) ? $oPage->getSort() : ''
 			sFieldLabel = 'Сортировка'}
 
 

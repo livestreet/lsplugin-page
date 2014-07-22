@@ -63,7 +63,7 @@ class PluginPage_HookMain extends Hook {
 	 * @return array
 	 */
 	public function NavMain($aParams) {
-		$aPages=$this->PluginPage_Main_GetPageItemsByFilter(array('#where'=>array('pid is null'=>array()),'main'=>1,'active'=>1));
+		$aPages=$this->PluginPage_Main_GetPageItemsByFilter(array('#where'=>array('pid is null'=>array()),'main'=>1,'active'=>1,'#order'=>array('sort'=>'desc')));
 		$aResult=array();
 		foreach($aPages as $oPage) {
 			$aResult[]=array(
