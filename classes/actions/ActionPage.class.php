@@ -1,4 +1,5 @@
 <?php
+
 /**
  * LiveStreet CMS
  * Copyright © 2013 OOO "ЛС-СОФТ"
@@ -18,65 +19,69 @@
  * @author Maxim Mzhelskiy <rus.engine@gmail.com>
  *
  */
+class PluginPage_ActionPage extends ActionPlugin
+{
 
-class PluginPage_ActionPage extends ActionPlugin {
+    public function Init()
+    {
+        /**
+         * Получаем текущего пользователя
+         */
+        $this->oUserCurrent = $this->User_GetUserCurrent();
+    }
 
-	public function Init() {
-		/**
-		 * Получаем текущего пользователя
-		 */
-		$this->oUserCurrent=$this->User_GetUserCurrent();
-	}
+    /**
+     * Регистрируем евенты
+     *
+     */
+    protected function RegisterEvent()
+    {
+        $this->AddEventPreg('/^[\w\-\_]*$/i', 'EventShowPage');
+    }
 
-	/**
-	 * Регистрируем евенты
-	 *
-	 */
-	protected function RegisterEvent() {
-		$this->AddEventPreg('/^[\w\-\_]*$/i','EventShowPage');
-	}
+    /**
+     * Обработка детального вывода страницы
+     */
+    protected function EventShowPage()
+    {
+        /**
+         * Составляем полный URL страницы для поиска по нему в БД
+         */
+        $sUrlFull = join('/', $this->GetParams());
+        if ($sUrlFull != '') {
+            $sUrlFull = $this->sCurrentEvent . '/' . $sUrlFull;
+        } else {
+            $sUrlFull = $this->sCurrentEvent;
+        }
+        /**
+         * Ищем страничку в БД
+         */
+        if (!($oPage = $this->PluginPage_Main_GetPageByFilter(array('url_full' => $sUrlFull, 'active' => 1)))) {
+            return $this->EventNotFound();
+        }
+        /**
+         * Заполняем HTML теги и SEO
+         */
+        $this->Viewer_AddHtmlTitle($oPage->getTitle());
+        if ($oPage->getSeoKeywords()) {
+            $this->Viewer_SetHtmlKeywords($oPage->getSeoKeywords());
+        }
+        if ($oPage->getSeoDescription()) {
+            $this->Viewer_SetHtmlDescription($oPage->getSeoDescription());
+        }
 
-	/**
-	 * Обработка детального вывода страницы
-	 */
-	protected function EventShowPage() {
-		/**
-		 * Составляем полный URL страницы для поиска по нему в БД
-		 */
-		$sUrlFull=join('/',$this->GetParams());
-		if ($sUrlFull!='') {
-			$sUrlFull=$this->sCurrentEvent.'/'.$sUrlFull;
-		} else {
-			$sUrlFull=$this->sCurrentEvent;
-		}
-		/**
-		 * Ищем страничку в БД
-		 */
-		if (!($oPage=$this->PluginPage_Main_GetPageByFilter(array('url_full'=>$sUrlFull,'active'=>1)))) {
-			return $this->EventNotFound();
-		}
-		/**
-		 * Заполняем HTML теги и SEO
-		 */
-		$this->Viewer_AddHtmlTitle($oPage->getTitle());
-		if ($oPage->getSeoKeywords()) {
-			$this->Viewer_SetHtmlKeywords($oPage->getSeoKeywords());
-		}
-		if ($oPage->getSeoDescription()) {
-			$this->Viewer_SetHtmlDescription($oPage->getSeoDescription());
-		}
-
-		$this->Viewer_Assign('oPage',$oPage);
-		$this->Viewer_Assign('sMenuHeadItemSelect','page_'.$oPage->getUrl());
-		/**
-		 * Добавляем блок
-		 */
-		if (Config::Get('plugin.page.show_block_structure')) {
-			$this->Viewer_AddBlock('right','structure',array('plugin'=>Plugin::GetPluginCode($this),'current_page'=>$oPage));
-		}
-		/**
-		 * Устанавливаем шаблон для вывода
-		 */
-		$this->SetTemplateAction('view');
-	}
+        $this->Viewer_Assign('oPage', $oPage);
+        $this->Viewer_Assign('sMenuHeadItemSelect', 'page_' . $oPage->getUrl());
+        /**
+         * Добавляем блок
+         */
+        if (Config::Get('plugin.page.show_block_structure')) {
+            $this->Viewer_AddBlock('right', 'structure',
+                array('plugin' => Plugin::GetPluginCode($this), 'current_page' => $oPage));
+        }
+        /**
+         * Устанавливаем шаблон для вывода
+         */
+        $this->SetTemplateAction('view');
+    }
 }

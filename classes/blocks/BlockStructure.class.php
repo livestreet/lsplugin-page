@@ -21,14 +21,19 @@
  * @package blocks
  * @since 1.0
  */
-class PluginPage_BlockStructure extends Block {
-	/**
-	 * Запуск обработки
-	 */
-	public function Exec() {
-		$aPages=$aCategories=$this->PluginPage_Main_LoadTreeOfPage(array('active'=>1,'#order'=>array('sort'=>'desc')));
-		$aPages=ModuleORM::buildTree($aPages);
-		$this->Viewer_Assign("aPagesTree",$aPages);
-		$this->Viewer_Assign("oCurrentPage",$this->GetParam('current_page'));
-	}
+class PluginPage_BlockStructure extends Block
+{
+    /**
+     * Запуск обработки
+     */
+    public function Exec()
+    {
+        $aPages = $aCategories = $this->PluginPage_Main_LoadTreeOfPage(array(
+            'active' => 1,
+            '#order' => array('sort' => 'desc')
+        ));
+        $aPages = ModuleORM::buildTree($aPages);
+        $this->Viewer_Assign("aPagesTree", $aPages);
+        $this->Viewer_Assign("oCurrentPage", $this->GetParam('current_page'));
+    }
 }

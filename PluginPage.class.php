@@ -23,26 +23,30 @@
  * Запрещаем напрямую через браузер обращение к этому файлу.
  */
 if (!class_exists('Plugin')) {
-	die('Hacking attempt!');
+    die('Hacking attempt!');
 }
 
-class PluginPage extends Plugin {
+class PluginPage extends Plugin
+{
 
-	public function Init() {
+    public function Init()
+    {
 
-	}
+    }
 
-	public function Activate() {
-		if (!$this->isTableExists('prefix_page')) {
-			/**
-			 * При активации выполняем SQL дамп
-			 */
-			$this->ExportSQL(dirname(__FILE__).'/install/dump.sql');
-		}
-		return true;
-	}
+    public function Activate()
+    {
+        if (!$this->isTableExists('prefix_page')) {
+            /**
+             * При активации выполняем SQL дамп
+             */
+            $this->ExportSQL(dirname(__FILE__) . '/install/dump.sql');
+        }
+        return true;
+    }
 
-	public function Deactivate() {
-		return true;
-	}
+    public function Deactivate()
+    {
+        return true;
+    }
 }

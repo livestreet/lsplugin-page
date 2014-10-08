@@ -1,4 +1,5 @@
 <?php
+
 /**
  * LiveStreet CMS
  * Copyright © 2013 OOO "ЛС-СОФТ"
@@ -18,55 +19,57 @@
  * @author Maxim Mzhelskiy <rus.engine@gmail.com>
  *
  */
+class PluginPage_ModuleMain extends ModuleORM
+{
+    /**
+     * Пересобирает полные URL дочерних страниц
+     *
+     * @param      $oPageStart
+     * @param bool $bStart
+     */
+    public function RebuildPageUrlFull($oPageStart, $bStart = true)
+    {
+        static $aRebuildIds;
+        if ($bStart) {
+            $aRebuildIds = array();
+        }
 
-class PluginPage_ModuleMain extends ModuleORM {
-	/**
-	 * Пересобирает полные URL дочерних страниц
-	 *
-	 * @param      $oPageStart
-	 * @param bool $bStart
-	 */
-	public function RebuildPageUrlFull($oPageStart,$bStart=true) {
-		static $aRebuildIds;
-		if ($bStart) {
-			$aRebuildIds=array();
-		}
+        if (is_null($oPageStart->getId())) {
+            $aPages = $this->GetPageItemsByFilter(array('#where' => array('pid is null' => array())));
+        } else {
+            $aPages = $this->GetPageItemsByFilter(array('pid' => $oPageStart->getId()));
+        }
 
-		if (is_null($oPageStart->getId())) {
-			$aPages=$this->GetPageItemsByFilter(array('#where'=>array('pid is null'=>array())));
-		} else {
-			$aPages=$this->GetPageItemsByFilter(array('pid'=>$oPageStart->getId()));
-		}
+        foreach ($aPages as $oPage) {
+            if ($oPage->getId() == $oPageStart->getId()) {
+                continue;
+            }
+            if (in_array($oPage->getId(), $aRebuildIds)) {
+                continue;
+            }
+            $aRebuildIds[] = $oPage->getId();
+            $oPage->setUrlFull($oPageStart->getUrlFull() . '/' . $oPage->getUrl());
+            $oPage->Update();
+            $this->RebuildPageUrlFull($oPage, false);
+        }
+    }
 
-		foreach ($aPages as $oPage) {
-			if ($oPage->getId()==$oPageStart->getId()) {
-				continue;
-			}
-			if (in_array($oPage->getId(),$aRebuildIds)) {
-				continue;
-			}
-			$aRebuildIds[]=$oPage->getId();
-			$oPage->setUrlFull($oPageStart->getUrlFull().'/'.$oPage->getUrl());
-			$oPage->Update();
-			$this->RebuildPageUrlFull($oPage,false);
-		}
-	}
+    public function GetNextPageBySort($iSort, $sPid, $sWay)
+    {
+        $aFilter = array();
+        if (is_null($sPid)) {
+            $aFilter['#where'] = array('pid is null' => array());
+        } else {
+            $aFilter['pid'] = $sPid;
+        }
 
-	public function GetNextPageBySort($iSort,$sPid,$sWay) {
-		$aFilter=array();
-		if (is_null($sPid)) {
-			$aFilter['#where']=array('pid is null'=>array());
-		} else {
-			$aFilter['pid']=$sPid;
-		}
-
-		if ($sWay=='up') {
-			$aFilter['sort >']=$iSort;
-			$aFilter['#order']=array('sort'=>'asc');
-		} else {
-			$aFilter['sort <']=$iSort;
-			$aFilter['#order']=array('sort'=>'desc');
-		}
-		return $this->GetPageByFilter($aFilter);
-	}
+        if ($sWay == 'up') {
+            $aFilter['sort >'] = $iSort;
+            $aFilter['#order'] = array('sort' => 'asc');
+        } else {
+            $aFilter['sort <'] = $iSort;
+            $aFilter['#order'] = array('sort' => 'desc');
+        }
+        return $this->GetPageByFilter($aFilter);
+    }
 }
