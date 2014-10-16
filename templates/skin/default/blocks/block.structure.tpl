@@ -4,7 +4,7 @@
  * @styles css/blocks.css
  *}
 
-{extends file='blocks/block.aside.base.tpl'}
+{extends 'components/block/block.tpl'}
 
 {block name='block_title'}Навигация по страницам{/block}
 
@@ -21,9 +21,9 @@
 		{/foreach}
 
 		{include 'components/nav/nav.tpl'
-				sName       = 'pages_tree'
-				sClasses    = 'actionbar-item-link'
-				sActiveItem = $oCurrentPage->getUrlFull()
-				sMods       = 'stacked pills'
-				aItems      = $aItems}
+				name       = 'pages_tree'
+				classes    = 'actionbar-item-link'
+				activeItem = $oCurrentPage->getUrlFull()
+				mods       = 'stacked pills'
+				items      = $aItems}
 {/block}

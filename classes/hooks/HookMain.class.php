@@ -82,6 +82,6 @@ class PluginPage_HookMain extends Hook
                 'name' => 'page_' . $oPage->getUrl(),
             );
         }
-        return array_merge($aParams['aItems'], $aResult);
+        return array_merge($aParams['items'], $aResult);
     }
 }
