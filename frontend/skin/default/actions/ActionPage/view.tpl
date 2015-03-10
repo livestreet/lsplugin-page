@@ -4,8 +4,8 @@
 
 {extends file='layouts/layout.base.tpl'}
 
-{block name='layout_options'}
-	{$bNoSidebar = !Config::Get('plugin.page.show_block_structure')}
+{block name='layout_options' prepend}
+	{$layoutNoSidebar = !Config::Get('plugin.page.show_block_structure')}
 {/block}
 
 {block name='layout_page_title'}
@@ -18,7 +18,6 @@
 	{else}
 		{$oPage->getText()|nl2br}
 	{/if}
-
 
 	{if $oUserCurrent and $oUserCurrent->isAdministrator()}
 		<br />
