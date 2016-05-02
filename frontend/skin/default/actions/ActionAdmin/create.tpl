@@ -5,7 +5,6 @@
  *}
 
 
-
 <h3 class="page-sub-header">
 	{if $oPage}
 		Редактирование страницы
@@ -16,91 +15,82 @@
 
 <form id="form-page-create" enctype="multipart/form-data" action="" method="post" onsubmit="{if $oPage}ls.plugin.page.admin.updatePage('form-page-create');{else}ls.plugin.page.admin.createPage('form-page-create');{/if} return false;">
 
-
 	{$aCategoriesList[] = [
-		'value' => '',
-		'text' => ''
+	'value' => '',
+	'text' => ''
 	]}
 	{foreach $aPageItems as $aPageItem}
 		{$aCategoriesList[] = [
-			'text' => ''|str_pad:(2*$aPageItem.level):'-'|cat:$aPageItem['entity']->getTitle(),
-			'value' => $aPageItem['entity']->getId()
-		]}
+		'text' => ''|str_pad:(2*$aPageItem.level):'-'|cat:$aPageItem['entity']->getTitle(),
+	'value' => $aPageItem['entity']->getId()
+	]}
 	{/foreach}
-	{include file="{$aTemplatePathPlugin.admin}forms/fields/form.field.select.tpl"
-			sFieldName          = 'page[pid]'
-			sFieldLabel         = 'Вложить в'
-			sFieldClasses       = 'width-200'
-			aFieldItems         = $aCategoriesList
-			sFieldSelectedValue = ($oPage) ? $oPage->getPid() : '' }
+	{component 'field' template='select'
+	name          = 'page[pid]'
+	label         = 'Вложить в'
+	inputClasses  = 'width-200'
+	items         = $aCategoriesList
+	selectedValue = ($oPage) ? $oPage->getPid() : '' }
 
+	{component 'field' template='text'
+	name  = 'page[title]'
+	value = (($oPage) ? $oPage->getTitle() : '')|escape
+	label = 'Название'}
 
-	{include file="{$aTemplatePathPlugin.admin}forms/fields/form.field.text.tpl"
-			 sFieldName  = 'page[title]'
-			 sFieldValue = (($oPage) ? $oPage->getTitle() : '')|escape
-			 sFieldLabel = 'Название'}
+	{component 'field' template='text'
+	name  = 'page[url]'
+	value = ($oPage) ? $oPage->getUrl() : ''
+	label = 'URL'}
 
+	{component 'editor'
+	name            = 'page[text]'
+	value           = (($oPage) ? $oPage->getText() : '')
+	label           = 'Текст'
+	inputClasses    = 'js-editor-default'}
 
-	{include file="{$aTemplatePathPlugin.admin}forms/fields/form.field.text.tpl"
-			sFieldName  = 'page[url]'
-			sFieldValue = ($oPage) ? $oPage->getUrl() : ''
-			sFieldLabel = 'URL'}
+	{component 'field' template='text'
+	name  = 'page[seo_keywords]'
+	value = (($oPage) ? $oPage->getSeoKeywords() : '')|escape
+	label = 'SEO Keywords'}
 
+	{component 'field' template='text'
+	name  = 'page[seo_description]'
+	value = (($oPage) ? $oPage->getSeoDescription() : '')|escape
+	label = 'SEO Description'}
 
-	{include file="{$aTemplatePathPlugin.admin}forms/fields/form.field.textarea.tpl"
-			sFieldName            = 'page[text]'
-			sFieldValue           = (($oPage) ? $oPage->getText() : '')|escape
-			sFieldLabel           = 'Текст'}
+	{component 'field' template='text'
+	name  = 'page[sort]'
+	value = ($oPage) ? $oPage->getSort() : ''
+	label = 'Сортировка'}
 
+	{component 'field' template='checkbox'
+	name  = 'page[auto_br]'
+	checked = ($oPage) ? $oPage->getAutoBr() : 0
+	label = 'Делать автопереносы строк'}
 
-	{include file="{$aTemplatePathPlugin.admin}forms/fields/form.field.text.tpl"
-			sFieldName  = 'page[seo_keywords]'
-			sFieldValue = (($oPage) ? $oPage->getSeoKeywords() : '')|escape
-			sFieldLabel = 'SEO Keywords'}
+	{component 'field' template='checkbox'
+	name  = 'page[active]'
+	checked = ($oPage) ? $oPage->getActive() : 0
+	label = 'Показывать'}
 
-
-	{include file="{$aTemplatePathPlugin.admin}forms/fields/form.field.text.tpl"
-			sFieldName  = 'page[seo_description]'
-			sFieldValue = (($oPage) ? $oPage->getSeoDescription() : '')|escape
-			sFieldLabel = 'SEO Description'}
-
-
-	{include file="{$aTemplatePathPlugin.admin}forms/fields/form.field.text.tpl"
-			sFieldName  = 'page[sort]'
-			sFieldValue = ($oPage) ? $oPage->getSort() : ''
-			sFieldLabel = 'Сортировка'}
-
-
-	{include file="{$aTemplatePathPlugin.admin}forms/fields/form.field.checkbox.tpl"
-			sFieldName  = 'page[auto_br]'
-			bFieldChecked = ($oPage) ? $oPage->getAutoBr() : 0
-			sFieldLabel = 'Делать автопереносы строк'}
-
-
-	{include file="{$aTemplatePathPlugin.admin}forms/fields/form.field.checkbox.tpl"
-			sFieldName  = 'page[active]'
-			bFieldChecked = ($oPage) ? $oPage->getActive() : 0
-			sFieldLabel = 'Показывать'}
-
-
-	{include file="{$aTemplatePathPlugin.admin}forms/fields/form.field.checkbox.tpl"
-			sFieldName  = 'page[main]'
-			bFieldChecked = ($oPage) ? $oPage->getMain() : 0
-			sFieldLabel = 'Выводить на главную'}
+	{component 'field' template='checkbox'
+	name  = 'page[main]'
+	checked = ($oPage) ? $oPage->getMain() : 0
+	label = 'Выводить на главную'}
 
 	<br/>
 
 	{* Кнпоки *}
-	{if $oPage}
-		{include file="{$aTemplatePathPlugin.admin}forms/fields/form.field.hidden.tpl" sFieldName='page[id]' sFieldValue=$oPage->getId()}
-		{include file="{$aTemplatePathPlugin.admin}forms/fields/form.field.button.tpl"
-				 sFieldName  = 'page[submit]'
-				 sFieldStyle = 'primary'
-				 sFieldText  = 'Сохранить'}
-	{else}
-		{include file="{$aTemplatePathPlugin.admin}forms/fields/form.field.button.tpl"
-				 sFieldName  = 'page[submit]'
-				 sFieldStyle = 'primary'
-				 sFieldText  = 'Добавить'}
-	{/if}
+	{if $oPage}{component 'field' template='hidden' name='page[id]' value=$oPage->getId()}{/if}
+	{component 'button'
+	name = 'page[submit]'
+	text = {lang "{( ! $oPage ) ? 'common.create' : 'common.save'}"}
+	mods = 'primary'}
 </form>
+
+
+<script>
+	jQuery(document).ready(function($){
+		$( '.js-editor-default' ).lsEditor();
+	});
+</script>
