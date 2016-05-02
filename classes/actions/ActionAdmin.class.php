@@ -107,7 +107,7 @@ class PluginPage_ActionAdmin extends PluginAdmin_ActionPlugin
          * Проверяем страницу на существование
          */
         if (!($oPage = $this->PluginPage_Main_GetPageById($this->GetParam(0)))) {
-            $this->Message_AddErrorSingle('Не удалось найти страницу', $this->Lang_Get('error'));
+            $this->Message_AddErrorSingle('Не удалось найти страницу', $this->Lang_Get('common.error.error'));
             return $this->EventError();
         }
 
@@ -129,7 +129,7 @@ class PluginPage_ActionAdmin extends PluginAdmin_ActionPlugin
          * Проверяем страницу на существование
          */
         if (!($oPage = $this->PluginPage_Main_GetPageById($this->GetParam(1)))) {
-            $this->Message_AddErrorSingle('Не удалось найти страницу', $this->Lang_Get('error'));
+            $this->Message_AddErrorSingle('Не удалось найти страницу', $this->Lang_Get('common.error.error'));
             return $this->EventError();
         }
 

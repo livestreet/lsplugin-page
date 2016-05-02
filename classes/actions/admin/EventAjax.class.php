@@ -56,12 +56,12 @@ class PluginPage_ActionAdmin_EventAjax extends Event
              */
             if ($oPage->Add()) {
                 $this->Viewer_AssignAjax('sUrlRedirect', $this->oAdminUrl->get(null, 'page'));
-                $this->Message_AddNotice('Добавление прошло успешно', $this->Lang_Get('attention'));
+                $this->Message_AddNotice('Добавление прошло успешно', $this->Lang_Get('common.attention'));
             } else {
-                $this->Message_AddError('Возникла ошибка при добавлении', $this->Lang_Get('error'));
+                $this->Message_AddError('Возникла ошибка при добавлении', $this->Lang_Get('common.error.error'));
             }
         } else {
-            $this->Message_AddError($oPage->_getValidateError(), $this->Lang_Get('error'));
+            $this->Message_AddError($oPage->_getValidateError(), $this->Lang_Get('common.error.error'));
         }
     }
 
@@ -78,7 +78,7 @@ class PluginPage_ActionAdmin_EventAjax extends Event
          * Проверяем статью на существование
          */
         if (!(isset($aPageRequest['id']) and $oPage = $this->PluginPage_Main_GetPageById($aPageRequest['id']))) {
-            $this->Message_AddErrorSingle('Не удалось найти страницу', $this->Lang_Get('error'));
+            $this->Message_AddErrorSingle('Не удалось найти страницу', $this->Lang_Get('common.error.error'));
             return;
         }
         $oPage->_setDataSafe($aPageRequest, array('auto_br', 'active', 'main'));
@@ -102,13 +102,13 @@ class PluginPage_ActionAdmin_EventAjax extends Event
                 }
                 $this->PluginPage_Main_RebuildPageUrlFull($oPage);
 
-                $this->Message_AddNotice('Обновление прошло успешно', $this->Lang_Get('attention'));
+                $this->Message_AddNotice('Обновление прошло успешно', $this->Lang_Get('common.attention'));
                 $this->Viewer_AssignAjax('sUrlRedirect', $this->oAdminUrl->get());
             } else {
-                $this->Message_AddError('Возникла ошибка при обновлении', $this->Lang_Get('error'));
+                $this->Message_AddError('Возникла ошибка при обновлении', $this->Lang_Get('common.error.error'));
             }
         } else {
-            $this->Message_AddError($oPage->_getValidateError(), $this->Lang_Get('error'));
+            $this->Message_AddError($oPage->_getValidateError(), $this->Lang_Get('common.error.error'));
         }
     }
 
@@ -121,7 +121,7 @@ class PluginPage_ActionAdmin_EventAjax extends Event
          * Проверяем страницу на существование
          */
         if (!($oPage = $this->PluginPage_Main_GetPageById(getRequestStr('id')))) {
-            $this->Message_AddErrorSingle('Не удалось найти страницу', $this->Lang_Get('error'));
+            $this->Message_AddErrorSingle('Не удалось найти страницу', $this->Lang_Get('common.error.error'));
             return;
         }
         /**

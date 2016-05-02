@@ -6,20 +6,20 @@
 
 <h3 class="page-sub-header">Список страниц</h3>
 
-<a href="{$oAdminUrl->get('create')}" class="button button-primary">Добавить страницу</a>
+{component 'admin:button'  text = 'Добавить страницу' mods='primary' url = {$oAdminUrl->get('create')}}
 
 <br>
 <br>
 
 {if $aPageItems}
-	<table class="table">
+	<table class="ls-table">
 		<thead>
 			<tr>
 				<th>Название</th>
 				<th>URL</th>
-				<th>Активна</th>
-				<th>На главной</th>
-				<th class="ta-r">Действие</th>
+				<th class="text-center" width="100">Активна</th>
+				<th class="text-center" width="100">На главной</th>
+				<th class="ls-table-cell-actions" width="100">Действие</th>
 			</tr>
 		</thead>
 
@@ -29,25 +29,23 @@
 				<tr id="article-item-{$oPageItem->getId()}">
 					<td>
 						<i class="{if $aPageItem.level == 0}icon-folder-close{else}icon-file{/if}" style="margin-left: {$aPageItem.level*20}px;"></i>
-						<a href="{$oPageItem->getWebUrl()}">{$oPageItem->getTitle()}</a>
+						<a href="{$oPageItem->getWebUrl()}">{$oPageItem->getTitle()|escape}</a>
 					</td>
 					<td>
 						{$oPageItem->getUrlFull()}
 					</td>
-					<td>{($oPageItem->getActive()) ? 'да' : 'нет'}</td>
-					<td>{($oPageItem->getMain()) ? 'да' : 'нет'}</td>
-					<td class="ta-r">
-						<a href="{$oAdminUrl->get('update')}{$oPageItem->getId()}/" class="icon-edit" title="Изменить"></a>
-						<a href="#" class="icon-remove" onclick="if (confirm('Действительно удалить?')) { ls.plugin.page.admin.removePage({$oPageItem->getId()}); } return false;" title="Удалить"></a>
-						<a href="{$oAdminUrl->get('sort/up')}{$oPageItem->getId()}/?security_ls_key={$LIVESTREET_SECURITY_KEY}" class="icon-arrow-up" title="Поднять вверх"></a>
-						<a href="{$oAdminUrl->get('sort/down')}{$oPageItem->getId()}/?security_ls_key={$LIVESTREET_SECURITY_KEY}" class="icon-arrow-down" title="Опустить вниз"></a>
+					<td class="text-center">{($oPageItem->getActive()) ? 'да' : 'нет'}</td>
+					<td class="text-center">{($oPageItem->getMain()) ? 'да' : 'нет'}</td>
+					<td class="ls-table-cell-actions">
+						<a href="{$oAdminUrl->get('update')}{$oPageItem->getId()}/" class="fa fa-edit" title="Изменить"></a>
+						<a href="#" class="fa fa-trash" onclick="if (confirm('Действительно удалить?')) { ls.plugin.page.admin.removePage({$oPageItem->getId()}); } return false;" title="Удалить"></a>
+						<a href="{$oAdminUrl->get('sort/up')}{$oPageItem->getId()}/?security_ls_key={$LIVESTREET_SECURITY_KEY}" class="fa fa-arrow-up" title="Поднять вверх"></a>
+						<a href="{$oAdminUrl->get('sort/down')}{$oPageItem->getId()}/?security_ls_key={$LIVESTREET_SECURITY_KEY}" class="fa fa-arrow-down" title="Опустить вниз"></a>
 					</td>
 				</tr>
 			{/foreach}
 		</tbody>
 	</table>
 {else}
-	{include file="{$aTemplatePathPlugin.admin}alert.tpl" mAlerts="Список страниц пуст" sAlertStyle='empty'}
+	{component 'admin:blankslate' text='Список страниц пуст'}
 {/if}
-
-{include file="{$aTemplatePathPlugin.admin}pagination.tpl" aPaging=$aPaging}
