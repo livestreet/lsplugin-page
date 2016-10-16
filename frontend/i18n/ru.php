@@ -10,5 +10,5 @@ return array(
     'config_sections' => array(
         'main' => 'Основные настройки',
     ),
-    'structure_title' => 'Навигация по страницам'
+    'structure_title' => 'Навигация'
 );

@@ -36,12 +36,6 @@ class PluginPage extends Plugin
 
     public function Activate()
     {
-        if (!$this->isTableExists('prefix_page')) {
-            /**
-             * При активации выполняем SQL дамп
-             */
-            $this->ExportSQL(dirname(__FILE__) . '/install/dump.sql');
-        }
         return true;
     }
 
