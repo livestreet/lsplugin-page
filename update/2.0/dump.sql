@@ -24,3 +24,5 @@ CREATE TABLE IF NOT EXISTS `prefix_page` (
 
 INSERT INTO `prefix_page` (`id`, `pid`, `url`, `url_full`, `title`, `text`, `date_add`, `date_edit`, `seo_keywords`, `seo_description`, `active`, `main`, `sort`, `auto_br`) VALUES
 (1, NULL, 'about', 'about', 'about', 'edit this page http://yousite/admin/', NOW(), NULL, '', '', 1, 1, 1, 1);
+
+ALTER TABLE `prefix_page` ADD `text_source` TEXT NULL DEFAULT NULL AFTER `text`;

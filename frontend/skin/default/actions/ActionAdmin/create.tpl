@@ -44,9 +44,11 @@
 
 	{component 'admin:editor'
 		name            = 'page[text]'
-		value           = (($oPage) ? $oPage->getText() : '')
+		value           = (($oPage) ? $oPage->getTextSource() : '')
 		label           = 'Текст'
-		inputClasses    = 'js-editor-default'}
+		inputClasses    = 'js-editor-default'
+		mediaTargetType = 'page'
+		mediaTargetId   = ( $oPage ) ? $oPage->getId() : ''}
 
 	{component 'admin:field' template='text'
 		name  = 'page[seo_keywords]'

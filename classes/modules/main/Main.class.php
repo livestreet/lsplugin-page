@@ -72,4 +72,13 @@ class PluginPage_ModuleMain extends ModuleORM
         }
         return $this->GetPageByFilter($aFilter);
     }
+
+    public function ParseTextTagGallery($sText)
+    {
+        $_this = $this;
+        $sText = preg_replace_callback('#<gallery\s+[^>]+\/>#', function ($aMatch) use ($_this) {
+            return $_this->Text_Parser($aMatch[0]);
+        }, $sText);
+        return $sText;
+    }
 }

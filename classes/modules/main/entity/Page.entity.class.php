@@ -32,6 +32,7 @@ class PluginPage_ModuleMain_EntityPage extends EntityORM
         array('title', 'string', 'allowEmpty' => false, 'min' => 1, 'max' => 250, 'label' => 'Название'),
         array('url', 'regexp', 'pattern' => '/^[\w\-_]+$/i', 'allowEmpty' => false, 'label' => 'URL'),
         array('text', 'string', 'allowEmpty' => true, 'min' => 1, 'max' => 50000, 'label' => 'Текст'),
+        array('text', 'text_check'),
         array('seo_keywords', 'string', 'allowEmpty' => true, 'min' => 1, 'max' => 500, 'label' => 'SEO Keywords'),
         array(
             'seo_description',
@@ -179,6 +180,15 @@ class PluginPage_ModuleMain_EntityPage extends EntityORM
     public function ValidateMainCheck($sValue, $aParams)
     {
         $this->setMain($this->getMain() ? 1 : 0);
+        return true;
+    }
+
+    public function ValidateTextCheck($sValue)
+    {
+        if ($sValue) {
+            $this->setTextSource($sValue);
+            $this->setText($this->PluginPage_Main_ParseTextTagGallery($sValue));
+        }
         return true;
     }
 

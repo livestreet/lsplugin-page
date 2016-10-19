@@ -52,7 +52,7 @@ class PluginPage_HookMain extends Hook
          * Добавляем новый раздел
          */
         $oMenu->AddSection(
-            Engine::GetEntity('PluginAdmin_Ui_MenuSection')->SetCaption('Статические страницы')->SetName('page')->SetUrl('plugin/page')
+            Engine::GetEntity('PluginAdmin_Ui_MenuSection')->SetCaption('Статические страницы')->SetName('page')->SetUrl('plugin/page')->setIcon('file-text-o')
                 ->AddItem(Engine::GetEntity('PluginAdmin_Ui_MenuItem')->SetCaption('Список страниц')->SetUrl(''))
                 ->AddItem(Engine::GetEntity('PluginAdmin_Ui_MenuItem')->SetCaption('Создать')->SetUrl('create'))
                 ->AddItem(Engine::GetEntity('PluginAdmin_Ui_MenuItem')->SetCaption('Настройки')->SetUrl('/admin/settings/plugin/page'))

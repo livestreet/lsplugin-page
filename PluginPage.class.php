@@ -29,9 +29,15 @@ if (!class_exists('Plugin')) {
 class PluginPage extends Plugin
 {
 
+    protected $aInherits = array(
+        'module' => array(
+            'ModuleMedia' => 'PluginPage_ModuleMedia',
+        )
+    );
+
     public function Init()
     {
-
+        $this->Media_AddTargetType('page', array('allow_preview' => false));
     }
 
     public function Activate()
