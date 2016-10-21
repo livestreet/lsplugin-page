@@ -69,7 +69,7 @@ class PluginPage_HookMain extends Hook
     public function NavMain($aParams)
     {
         $aPages = $this->PluginPage_Main_GetPageItemsByFilter(array(
-            '#where' => array('pid is null' => array()),
+            'pid'    => null,
             'main'   => 1,
             'active' => 1,
             '#order' => array('sort' => 'desc')

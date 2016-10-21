@@ -34,11 +34,7 @@ class PluginPage_ModuleMain extends ModuleORM
             $aRebuildIds = array();
         }
 
-        if (is_null($oPageStart->getId())) {
-            $aPages = $this->GetPageItemsByFilter(array('#where' => array('pid is null' => array())));
-        } else {
-            $aPages = $this->GetPageItemsByFilter(array('pid' => $oPageStart->getId()));
-        }
+        $aPages = $this->GetPageItemsByFilter(array('pid' => $oPageStart->getId()));
 
         foreach ($aPages as $oPage) {
             if ($oPage->getId() == $oPageStart->getId()) {
@@ -56,12 +52,9 @@ class PluginPage_ModuleMain extends ModuleORM
 
     public function GetNextPageBySort($iSort, $sPid, $sWay)
     {
-        $aFilter = array();
-        if (is_null($sPid)) {
-            $aFilter['#where'] = array('pid is null' => array());
-        } else {
-            $aFilter['pid'] = $sPid;
-        }
+        $aFilter = array(
+            'pid' => $sPid
+        );
 
         if ($sWay == 'up') {
             $aFilter['sort >'] = $iSort;
