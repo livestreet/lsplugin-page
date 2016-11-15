@@ -13,14 +13,18 @@
 {/block}
 
 {block name='layout_content'}
-	{if !$oPage->getAutoBr() or Config::Get('view.wysiwyg')}
-		{$oPage->getText()}
-	{else}
-		{$oPage->getText()|nl2br}
-	{/if}
+	{capture page_text}
+		{if !$oPage->getAutoBr() or Config::Get('view.wysiwyg')}
+			{$oPage->getText()}
+		{else}
+			{$oPage->getText()|nl2br}
+		{/if}
+	{/capture}
+
+	{component 'text' text=$smarty.capture.page_text}
 
 	{if $oUserCurrent and $oUserCurrent->isAdministrator()}
 		<br />
-		<a href="{$oPage->getAdminEditWebUrl()}">Редактировать</a>
+		{component 'button' url=$oPage->getAdminEditWebUrl() mods='primary' text='Редактировать'}
 	{/if}
 {/block}
