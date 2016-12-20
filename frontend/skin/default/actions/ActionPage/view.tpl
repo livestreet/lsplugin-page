@@ -13,6 +13,13 @@
 {/block}
 
 {block name='layout_content'}
+	{if $oUserCurrent and $oUserCurrent->isAdministrator()}
+		{$items = [
+			[ 'icon' => 'edit', 'url' => $oPage->getAdminEditWebUrl(), 'text' => $aLang.common.edit ]
+		]}
+		{component 'actionbar' items=[[ 'buttons' => $items ]]}
+	{/if}
+
 	{capture page_text}
 		{if !$oPage->getAutoBr() or Config::Get('view.wysiwyg')}
 			{$oPage->getText()}
@@ -22,9 +29,4 @@
 	{/capture}
 
 	{component 'text' text=$smarty.capture.page_text}
-
-	{if $oUserCurrent and $oUserCurrent->isAdministrator()}
-		<br />
-		{component 'button' url=$oPage->getAdminEditWebUrl() mods='primary' text='Редактировать'}
-	{/if}
 {/block}

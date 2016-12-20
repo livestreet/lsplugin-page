@@ -52,10 +52,10 @@ class PluginPage_HookMain extends Hook
          * Добавляем новый раздел
          */
         $oMenu->AddSection(
-            Engine::GetEntity('PluginAdmin_Ui_MenuSection')->SetCaption('Статические страницы')->SetName('page')->SetUrl('plugin/page')->setIcon('file-text-o')
-                ->AddItem(Engine::GetEntity('PluginAdmin_Ui_MenuItem')->SetCaption('Список страниц')->SetUrl(''))
-                ->AddItem(Engine::GetEntity('PluginAdmin_Ui_MenuItem')->SetCaption('Создать')->SetUrl('create'))
-                ->AddItem(Engine::GetEntity('PluginAdmin_Ui_MenuItem')->SetCaption('Настройки')->SetUrl('/admin/settings/plugin/page'))
+            Engine::GetEntity('PluginAdmin_Ui_MenuSection')->SetCaption($this->Lang_Get('plugin.page.admin.title'))->SetName('page')->SetUrl('plugin/page')->setIcon('file-text-o')
+                ->AddItem(Engine::GetEntity('PluginAdmin_Ui_MenuItem')->SetCaption($this->Lang_Get('plugin.page.admin.menu.list'))->SetUrl(''))
+                ->AddItem(Engine::GetEntity('PluginAdmin_Ui_MenuItem')->SetCaption($this->Lang_Get('plugin.page.admin.menu.create'))->SetUrl('create'))
+                ->AddItem(Engine::GetEntity('PluginAdmin_Ui_MenuItem')->SetCaption($this->Lang_Get('plugin.page.admin.menu.settings'))->SetUrl('/admin/settings/plugin/page'))
         );
     }
 

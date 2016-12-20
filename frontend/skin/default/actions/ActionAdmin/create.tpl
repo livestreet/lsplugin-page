@@ -6,11 +6,7 @@
 
 
 <h3 class="page-sub-header">
-	{if $oPage}
-		Редактирование страницы
-	{else}
-		Добавление страницы
-	{/if}
+	{lang "{( ! $oPage ) ? 'plugin.page.titles.add' : 'plugin.page.titles.edit'}"}
 </h3>
 
 <form id="form-page-create" enctype="multipart/form-data" action="" method="post" onsubmit="{if $oPage}ls.plugin.page.admin.updatePage('form-page-create');{else}ls.plugin.page.admin.createPage('form-page-create');{/if} return false;">
@@ -27,7 +23,7 @@
 	{/foreach}
 	{component 'admin:field' template='select'
 		name          = 'page[pid]'
-		label         = 'Вложить в'
+		label         = {lang 'plugin.page.fields.parent.label'}
 		inputClasses  = 'width-200'
 		items         = $aCategoriesList
 		selectedValue = ($oPage) ? $oPage->getPid() : '' }
@@ -35,17 +31,17 @@
 	{component 'admin:field' template='text'
 		name  = 'page[title]'
 		value = (($oPage) ? $oPage->getTitle() : '')
-		label = 'Название'}
+		label = {lang 'plugin.page.fields.title.label'}}
 
 	{component 'admin:field' template='text'
 		name  = 'page[url]'
 		value = ($oPage) ? $oPage->getUrl() : ''
-		label = 'URL'}
+		label = {lang 'plugin.page.fields.url.label'}}
 
 	{component 'admin:editor'
 		name            = 'page[text]'
 		value           = (($oPage) ? $oPage->getTextSource() : '')
-		label           = 'Текст'
+		label           = {lang 'plugin.page.fields.text.label'}
 		inputClasses    = 'js-editor-default'
 		mediaTargetType = 'page'
 		mediaTargetId   = ( $oPage ) ? $oPage->getId() : ''}
@@ -53,32 +49,32 @@
 	{component 'admin:field' template='text'
 		name  = 'page[seo_keywords]'
 		value = (($oPage) ? $oPage->getSeoKeywords() : '')
-		label = 'SEO Keywords'}
+		label = {lang 'plugin.page.fields.seo_keywords.label'}}
 
 	{component 'admin:field' template='text'
 		name  = 'page[seo_description]'
 		value = (($oPage) ? $oPage->getSeoDescription() : '')
-		label = 'SEO Description'}
+		label = {lang 'plugin.page.fields.seo_description.label'}}
 
 	{component 'admin:field' template='text'
 		name  = 'page[sort]'
 		value = ($oPage) ? $oPage->getSort() : ''
-		label = 'Сортировка'}
+		label = {lang 'plugin.page.fields.sort.label'}}
 
 	{component 'admin:field' template='checkbox'
 		name  = 'page[auto_br]'
 		checked = ($oPage) ? $oPage->getAutoBr() : 0
-		label = 'Делать автопереносы строк'}
+		label = {lang 'plugin.page.fields.auto_br.label'}}
 
 	{component 'admin:field' template='checkbox'
 		name  = 'page[active]'
 		checked = ($oPage) ? $oPage->getActive() : 0
-		label = 'Показывать'}
+		label = {lang 'plugin.page.fields.active.label'}}
 
 	{component 'admin:field' template='checkbox'
 		name  = 'page[main]'
 		checked = ($oPage) ? $oPage->getMain() : 0
-		label = 'Выводить на главную'}
+		label = {lang 'plugin.page.fields.main.label'}}
 
 	<br/>
 
