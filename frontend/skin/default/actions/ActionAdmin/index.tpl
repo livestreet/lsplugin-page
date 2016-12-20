@@ -4,9 +4,9 @@
  * @param array $aPageItems Список страниц
  *}
 
-<h3 class="page-sub-header">Список страниц</h3>
+<h3 class="page-sub-header">{$aLang.plugin.page.titles.list}</h3>
 
-{component 'admin:button'  text = 'Добавить страницу' mods='primary' url = {$oAdminUrl->get('create')}}
+{component 'admin:button'  text = $aLang.plugin.page.actions.create mods='primary' url = {$oAdminUrl->get('create')}}
 
 <br>
 <br>
@@ -15,11 +15,11 @@
 	<table class="ls-table">
 		<thead>
 			<tr>
-				<th>Название</th>
-				<th>URL</th>
-				<th class="text-center" width="100">Активна</th>
-				<th class="text-center" width="100">На главной</th>
-				<th class="ls-table-cell-actions" width="100">Действие</th>
+				<th>{$aLang.plugin.page.admin.list.title}</th>
+				<th>{$aLang.plugin.page.admin.list.url}</th>
+				<th class="text-center" width="100">{$aLang.plugin.page.admin.list.active}</th>
+				<th class="text-center" width="100">{$aLang.plugin.page.admin.list.index}</th>
+				<th class="ls-table-cell-actions" width="100">{$aLang.plugin.page.admin.list.action}</th>
 			</tr>
 		</thead>
 
@@ -41,15 +41,15 @@
 					<td class="text-center">{($oPageItem->getActive()) ? 'да' : 'нет'}</td>
 					<td class="text-center">{($oPageItem->getMain()) ? 'да' : 'нет'}</td>
 					<td class="ls-table-cell-actions">
-						<a href="{$oAdminUrl->get('update')}{$oPageItem->getId()}/" class="fa fa-edit" title="Изменить"></a>
-						<a href="#" class="fa fa-trash" onclick="if (confirm('Действительно удалить?')) { ls.plugin.page.admin.removePage({$oPageItem->getId()}); } return false;" title="Удалить"></a>
-						<a href="{$oAdminUrl->get('sort/up')}{$oPageItem->getId()}/?security_ls_key={$LIVESTREET_SECURITY_KEY}" class="fa fa-arrow-up" title="Поднять вверх"></a>
-						<a href="{$oAdminUrl->get('sort/down')}{$oPageItem->getId()}/?security_ls_key={$LIVESTREET_SECURITY_KEY}" class="fa fa-arrow-down" title="Опустить вниз"></a>
+						<a href="{$oAdminUrl->get('update')}{$oPageItem->getId()}/" class="fa fa-edit" title="{$aLang.plugin.page.actions.update}"></a>
+						<a href="#" class="fa fa-trash" onclick="if (confirm('Действительно удалить?')) { ls.plugin.page.admin.removePage({$oPageItem->getId()}); } return false;" title="{$aLang.plugin.page.actions.remove}"></a>
+						<a href="{$oAdminUrl->get('sort/up')}{$oPageItem->getId()}/?security_ls_key={$LIVESTREET_SECURITY_KEY}" class="fa fa-arrow-up" title="{$aLang.plugin.page.actions.sort_up}"></a>
+						<a href="{$oAdminUrl->get('sort/down')}{$oPageItem->getId()}/?security_ls_key={$LIVESTREET_SECURITY_KEY}" class="fa fa-arrow-down" title="{$aLang.plugin.page.actions.sort_down}"></a>
 					</td>
 				</tr>
 			{/foreach}
 		</tbody>
 	</table>
 {else}
-	{component 'admin:blankslate' text='Список страниц пуст'}
+	{component 'admin:blankslate' text=$aLang.plugin.page.admin.list.empty}
 {/if}

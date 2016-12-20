@@ -25,6 +25,6 @@
 
 	{if $oUserCurrent and $oUserCurrent->isAdministrator()}
 		<br />
-		{component 'button' url=$oPage->getAdminEditWebUrl() mods='primary' text='Редактировать'}
+		{component 'button' url=$oPage->getAdminEditWebUrl() mods='primary' text=$aLang.common.edit}
 	{/if}
 {/block}

@@ -21,33 +21,6 @@
  */
 class PluginPage_ModuleMain_EntityPage extends EntityORM
 {
-
-    /**
-     * Правила валидации полей
-     *
-     * @var array
-     */
-    protected $aValidateRules = array(
-        array('pid', 'parent_check'),
-        array('title', 'string', 'allowEmpty' => false, 'min' => 1, 'max' => 250, 'label' => 'Название'),
-        array('url', 'regexp', 'pattern' => '/^[\w\-_]+$/i', 'allowEmpty' => false, 'label' => 'URL'),
-        array('text', 'string', 'allowEmpty' => true, 'min' => 1, 'max' => 50000, 'label' => 'Текст'),
-        array('text', 'text_check'),
-        array('seo_keywords', 'string', 'allowEmpty' => true, 'min' => 1, 'max' => 500, 'label' => 'SEO Keywords'),
-        array(
-            'seo_description',
-            'string',
-            'allowEmpty' => true,
-            'min'        => 1,
-            'max'        => 500,
-            'label'      => 'SEO Description'
-        ),
-        array('sort', 'sort_check'),
-        array('auto_br', 'auto_br_check'),
-        array('active', 'active_check'),
-        array('main', 'main_check'),
-    );
-
     /**
      * Связи с другими таблицами
      *
@@ -56,6 +29,62 @@ class PluginPage_ModuleMain_EntityPage extends EntityORM
     protected $aRelations = array(
         self::RELATION_TYPE_TREE,
     );
+
+    public function Init()
+    {
+        parent::Init();
+        /**
+         * Правила валидации полей
+         *
+         * @var array
+         */
+        $this->aValidateRules[] = array('pid', 'parent_check');
+        $this->aValidateRules[] = array(
+            'title',
+            'string',
+            'allowEmpty' => false,
+            'min' => 1,
+            'max' => 250,
+            'label' => $this->Lang_Get('plugin.page.fields.parent.label')
+        );
+        $this->aValidateRules[] = array(
+            'url',
+            'regexp', 
+            'pattern' => '/^[\w\-_]+$/i',
+            'allowEmpty' => false,
+            'label' => $this->Lang_Get('plugin.page.fields.url.label')
+        );
+        $this->aValidateRules[] = array(
+            'text',
+            'string',
+            'allowEmpty' => true,
+            'min' => 1,
+            'max' => 50000,
+            'label' => $this->Lang_Get('plugin.page.fields.text.label')
+        );
+        $this->aValidateRules[] = array('text', 'text_check');
+        $this->aValidateRules[] = array(
+            'seo_keywords',
+            'string',
+            'allowEmpty' => true, 
+            'min' => 1,
+            'max' => 500,
+            'label' => $this->Lang_Get('plugin.page.fields.seo_keywords.label')
+        );
+        $this->aValidateRules[] = array(
+            'seo_description',
+            'string',
+            'allowEmpty' => true,
+            'min' => 1,
+            'max' => 500,
+            'label' => $this->Lang_Get('plugin.page.fields.seo_description.label')
+        );
+        $this->aValidateRules[] = array('sort', 'sort_check');
+        $this->aValidateRules[] = array('auto_br', 'auto_br_check');
+        $this->aValidateRules[] = array('active', 'active_check');
+        $this->aValidateRules[] = array('main', 'main_check');
+    }
+
 
     public function _getTreeParentKey()
     {
@@ -112,11 +141,11 @@ class PluginPage_ModuleMain_EntityPage extends EntityORM
         if ($this->getPid()) {
             if ($oPage = $this->PluginPage_Main_GetPageById($this->getPid())) {
                 if ($oPage->getId() == $this->getId()) {
-                    return 'Попытка вложить страницу в саму себя';
+                    return $this->Lang_Get('plugin.page.fields.parent.error_descendants');
                 }
                 $this->setUrlFull($oPage->getUrlFull() . '/' . $this->getUrl());
             } else {
-                return 'Неверная страница';
+                return $this->Lang_Get('plugin.page.fields.parent.error');
             }
         } else {
             $this->setPid(null);
