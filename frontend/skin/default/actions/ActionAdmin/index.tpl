@@ -38,13 +38,25 @@
 					<td>
 						{$oPageItem->getUrlFull()}
 					</td>
-					<td class="text-center">{($oPageItem->getActive()) ? 'да' : 'нет'}</td>
-					<td class="text-center">{($oPageItem->getMain()) ? 'да' : 'нет'}</td>
+					<td class="text-center">
+						{component 'icon' icon = {($oPageItem->getActive()) ? 'check' : 'times'}}
+					</td>
+					<td class="text-center">
+						{component 'icon' icon = {($oPageItem->getMain()) ? 'check' : 'times'}}
+					</td>
 					<td class="ls-table-cell-actions">
-						<a href="{$oAdminUrl->get('update')}{$oPageItem->getId()}/" class="fa fa-edit" title="{$aLang.plugin.page.actions.update}"></a>
-						<a href="#" class="fa fa-trash" onclick="if (confirm('Действительно удалить?')) { ls.plugin.page.admin.removePage({$oPageItem->getId()}); } return false;" title="{$aLang.plugin.page.actions.remove}"></a>
-						<a href="{$oAdminUrl->get('sort/up')}{$oPageItem->getId()}/?security_ls_key={$LIVESTREET_SECURITY_KEY}" class="fa fa-arrow-up" title="{$aLang.plugin.page.actions.sort_up}"></a>
-						<a href="{$oAdminUrl->get('sort/down')}{$oPageItem->getId()}/?security_ls_key={$LIVESTREET_SECURITY_KEY}" class="fa fa-arrow-down" title="{$aLang.plugin.page.actions.sort_down}"></a>
+						<a href="{$oAdminUrl->get('update')}{$oPageItem->getId()}/" title="{$aLang.plugin.page.actions.update}">
+							{component 'icon' icon = 'edit'}
+						</a>
+						<a href="#" onclick="if (confirm('{$aLang.plugin.page.actions.remove_confirm}')) { ls.plugin.page.admin.removePage({$oPageItem->getId()}); } return false;" title="{$aLang.plugin.page.actions.remove}">
+							{component 'icon' icon = 'trash'}
+						</a>
+						<a href="{$oAdminUrl->get('sort/up')}{$oPageItem->getId()}/?security_ls_key={$LIVESTREET_SECURITY_KEY}" title="{$aLang.plugin.page.actions.sort_up}">
+							{component 'icon' icon = 'arrow-up'}
+						</a>
+						<a href="{$oAdminUrl->get('sort/down')}{$oPageItem->getId()}/?security_ls_key={$LIVESTREET_SECURITY_KEY}" title="{$aLang.plugin.page.actions.sort_down}">
+							{component 'icon' icon = 'arrow-down'}
+						</a>
 					</td>
 				</tr>
 			{/foreach}
