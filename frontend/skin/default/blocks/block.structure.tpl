@@ -12,7 +12,7 @@
 	{component 'nav'
 		name       = 'pages_tree'
 		classes    = 'actionbar-item-link'
-		activeItem = $oCurrentPage->getUrlFull()
+		activeItem = ($oCurrentPage) ? $oCurrentPage->getUrlFull() : false
 		mods       = 'stacked pills'
 		items      = $aItems}
 {/capture}
